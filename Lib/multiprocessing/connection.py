@@ -78,10 +78,10 @@ def arbitrary_address(family):
         # sun_path as short as 92 bytes in the sockaddr_un struct.
         if util.abstract_sockets_supported:
             return f"\0listener-{os.getpid()}-{next(_mmap_counter)}"
-        return tempfile.mktemp(prefix='listener-', dir=util.get_temp_dir())
+        return tempfile.mkstemp(prefix='listener-', dir=util.get_temp_dir())[1]
     elif family == 'AF_PIPE':
-        return tempfile.mktemp(prefix=r'\\.\pipe\pyc-%d-%d-' %
-                               (os.getpid(), next(_mmap_counter)), dir="")
+        return os.path.basename(tempfile.mkstemp(prefix=r'\\.\pipe\pyc-%d-%d-' %
+                               (os.getpid(), next(_mmap_counter)), dir="")[1])
     else:
         raise ValueError('unrecognized family')
 
