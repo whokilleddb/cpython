@@ -80,9 +80,8 @@ def arbitrary_address(family):
             return f"\0listener-{os.getpid()}-{next(_mmap_counter)}"
         return tempfile.NamedTemporaryFile(prefix='listener-', dir=util.get_temp_dir()).name
     elif family == 'AF_PIPE':
-        return os.path.basename(tempfile.NamedTemporaryFile(
-                                prefix=r'\\.\pipe\pyc-%d-%d-' %
-                                (os.getpid(), next(_mmap_counter)), dir="").name)
+        return tempfile.NamedTemporaryFile(prefix=r'\\.\pipe\pyc-%d-%d-' %
+                                (os.getpid(), next(_mmap_counter)), dir="").name
     else:
         raise ValueError('unrecognized family')
 
